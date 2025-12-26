@@ -1,0 +1,28 @@
+@if (user()) {
+<div class="profile-container">
+    <h2>My Profile</h2>
+
+    <div class="profile-card">
+        <div class="avatar">
+            {{ user()?.name?.charAt(0) }}
+        </div>
+
+        <div class="info">
+            <div class="row">
+                <label>Name</label>
+                <span>{{ user()?.name }}</span>
+            </div>
+            <div class="row">
+                <label>Role</label>
+                <span class="badge" [class.admin]="authService.isAdmin()">
+                    {{ user()?.role }}
+                </span>
+            </div>
+            <div class="row">
+                <label>Employee ID</label>
+                <span>EMP-{{ user()?.id }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+}

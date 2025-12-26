@@ -1,0 +1,56 @@
+<div class="expense-container">
+    <div class="header">
+        <h2>My Expenses</h2>
+        <div class="actions">
+            <div class="filters">
+                <button [class.active]="filter() === 'ALL'" (click)="filter.set('ALL')">All</button>
+                <button [class.active]="filter() === 'PENDING'" (click)="filter.set('PENDING')">Pending</button>
+                <button [class.active]="filter() === 'APPROVED'" (click)="filter.set('APPROVED')">Approved</button>
+            </div>
+            <a routerLink="/travel/expenses/create" class="btn-add">
+                + New Claim
+            </a>
+        </div>
+    </div>
+
+    <div class="cards-grid">
+        @for (expense of filteredExpenses(); track expense.id) {
+        <div class="card">
+            <div class="status-badge" [ngClass]="expense.status.toLowerCase()">
+                {{ expense.status }}
+            </div>
+
+            <div class="card-content">
+                <div class="top-row">
+                    <h3>{{ expense.title }}</h3>
+                    <span class="amount">₹{{ expense.amount }}</span>
+                </div>
+
+                <div class="meta">
+                    <span class="category tag">{{ expense.category }}</span>
+                    <span class="date">{{ expense.date | date }}</span>
+                </div>
+
+                @if (expense.receiptUrl) {
+                <div class="receipt-preview">
+                    <img [src]="expense.receiptUrl" alt="Receipt">
+                </div>
+                }
+
+                @if (authService.isManager() && expense.status === 'PENDING') {
+                <div class="admin-actions">
+                    <button class="btn-approve" (click)="onApprove(expense.id)">Approve</button>
+                    <button class="btn-reject" (click)="onReject(expense.id)">Reject</button>
+                </div>
+                }
+
+                <!-- All users can edit/delete their own expenses -->
+                <div class="user-actions">
+                    <button class="btn-edit" (click)="onEdit(expense)">✏️</button>
+                    <button class="btn-delete" (click)="onDelete(expense.id)">🗑️</button>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

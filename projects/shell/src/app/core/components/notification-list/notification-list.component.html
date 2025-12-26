@@ -1,0 +1,26 @@
+<div class="notification-dropdown">
+    <div class="dropdown-header">
+        <h3>Notifications</h3>
+        <span class="badge" *ngIf="notificationService.unreadCount() > 0">{{ notificationService.unreadCount() }}
+            New</span>
+    </div>
+
+    <div class="list-container">
+        @if (notificationService.notifications().length === 0) {
+        <div class="empty-state">No notifications</div>
+        } @else {
+        @for (notif of notificationService.notifications(); track notif.id) {
+        <div class="notification-item" [class.unread]="!notif.read">
+            <p class="message">{{ notif.message }}</p>
+            <div class="meta">
+                <span class="date">{{ notif.date | date:'short' }}</span>
+                @if (notif.type === 'APPROVAL_REQUEST') {
+                <button (click)="onApprove(notif)" class="btn-approve">Approve</button>
+                }
+                <button (click)="onDelete(notif.id)" class="btn-delete" title="Delete">×</button>
+            </div>
+        </div>
+        }
+        }
+    </div>
+</div>

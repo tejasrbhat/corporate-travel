@@ -1,0 +1,99 @@
+header {
+    background: #333;
+    padding: 1rem 2rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+a {
+    color: #aaa;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    cursor: pointer;
+
+    &.active {
+        color: white;
+        border-bottom: 2px solid white;
+    }
+
+    &:hover {
+        color: white;
+    }
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative; // For overlays
+}
+
+.icon-btn.bell {
+    font-size: 1.2rem;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    .badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff4757;
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 5px;
+        border-radius: 50%;
+        min-width: 15px;
+        text-align: center;
+        border: 2px solid #333; // Match header bg for cutout effect
+    }
+}
+
+.profile-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: background 0.3s;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .avatar-small {
+        width: 32px;
+        height: 32px;
+        background: #3498db;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .name {
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+}

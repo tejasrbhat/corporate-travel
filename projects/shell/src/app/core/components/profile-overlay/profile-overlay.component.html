@@ -1,0 +1,32 @@
+<div class="profile-dropdown">
+    <div class="header">
+        <div class="avatar-large">{{ getInitials() }}</div>
+        <div class="info">
+            <h4>{{ user()?.name }}</h4>
+            <p>{{ user()?.role }}</p>
+            <p class="username">&#64;{{ user()?.username }}</p>
+        </div>
+    </div>
+
+    <div class="content">
+        @if (!isEditing()) {
+        <div class="details-view">
+            <p><strong>Email:</strong> {{ user()?.username }}&#64;corp.com</p> <!-- Mock email -->
+            <button class="btn-edit" (click)="enableEdit()">Edit Profile</button>
+            <button class="btn-logout" (click)="logout()">Logout</button>
+        </div>
+        } @else {
+        <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="edit-form">
+            <div class="form-group">
+                <label>Display Name</label>
+                <input formControlName="name" placeholder="Name" />
+            </div>
+
+            <div class="actions">
+                <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+                <button type="submit" class="btn-save">Save</button>
+            </div>
+        </form>
+        }
+    </div>
+</div>

@@ -1,0 +1,94 @@
+.login-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+
+    .login-box {
+        background: white;
+        padding: 3rem;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+
+        h2 {
+            margin: 0 0 0.5rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            label {
+                font-weight: 500;
+                color: #555;
+                font-size: 0.9rem;
+            }
+
+            input {
+                padding: 0.8rem;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-size: 1rem;
+                transition: border-color 0.3s;
+
+                &:focus {
+                    border-color: #007bff;
+                    outline: none;
+                }
+            }
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 0.9rem;
+            text-align: center;
+            background: #fff5f5;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 0.5rem;
+
+            &:hover {
+                background: #0056b3;
+            }
+        }
+
+        .hint {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #888;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+    }
+}

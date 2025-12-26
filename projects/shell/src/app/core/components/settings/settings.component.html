@@ -1,0 +1,69 @@
+<div class="settings-container">
+    <div class="header">
+        <h2>User Management</h2>
+        <button class="btn-add" (click)="toggleForm()">
+            {{ showForm() ? 'Cancel' : '+ Add User' }}
+        </button>
+    </div>
+
+    @if (showForm()) {
+    <div class="form-container">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label>Name</label>
+                <input formControlName="name" placeholder="Full Name">
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input formControlName="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" formControlName="password" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <select formControlName="role">
+                    <option value="USER">User</option>
+                    <option value="MANAGER">Manager</option>
+                    <option value="ADMIN">Admin</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" [disabled]="userForm.invalid" class="btn-submit">Create User</button>
+            </div>
+        </form>
+    </div>
+    }
+
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (user of userService.users(); track user.id) {
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>
+                        <span class="badge" [class]="user.role.toLowerCase()">
+                            {{ user.role }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-delete" (click)="onDelete(user.id)" *ngIf="user.id">🗑️</button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

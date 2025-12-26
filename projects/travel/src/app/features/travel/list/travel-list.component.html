@@ -1,0 +1,42 @@
+<div class="travel-container">
+    <div class="header">
+        <h2>Travel Plans</h2>
+        @if (authService.isAdmin()) {
+        <a routerLink="/travel/create" class="btn-add">
+            + Add New Plan
+        </a>
+        } @else {
+        <a routerLink="/travel/itinerary" class="btn-itinerary">
+            📅 My Itinerary
+        </a>
+        }
+    </div>
+
+    <div class="cards-grid">
+        @for (plan of travelService.trips(); track plan.id) {
+        <div class="card">
+            <div class="card-image">
+                <img [src]="plan.imageUrl" [alt]="plan.destination">
+            </div>
+            <div class="card-content">
+                <h3>{{ plan.destination }}</h3>
+                <p class="description">{{ plan.description }}</p>
+                <div class="details">
+                    <span>📅 {{ plan.startDate | date }} - {{ plan.endDate | date }}</span>
+                </div>
+
+                @if (authService.isAdmin()) {
+                <div class="actions">
+                    <button class="btn-edit" (click)="onEdit(plan)">✏️</button>
+                    <button class="btn-delete" (click)="onDelete(plan.id)">🗑️</button>
+                </div>
+                } @else {
+                <div class="actions">
+                    <a [routerLink]="['/travel/book', plan.id]" class="btn-book">✈️ Book Flight</a>
+                </div>
+                }
+            </div>
+        </div>
+        }
+    </div>
+</div>

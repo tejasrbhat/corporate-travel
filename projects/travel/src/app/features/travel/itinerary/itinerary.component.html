@@ -1,0 +1,52 @@
+<div class="travel-container">
+    <div class="header">
+        <h2>My Bookings & Itineraries</h2>
+    </div>
+
+    @if (bookings().length === 0) {
+    <div class="card">
+        <div class="card-content">
+            <p>No bookings found.</p>
+        </div>
+    </div>
+    }
+
+    <div class="bookings-list">
+        @for (booking of bookings(); track booking.id) {
+        <div class="card booking-card">
+            <div class="card-content">
+                <div class="booking-header">
+                    <h3>Trip to {{ getDestination(booking.tripId) }}</h3>
+                    <span class="status-badge">{{ booking.status }}</span>
+                </div>
+
+                <div class="booking-details">
+                    <div class="detail-item">
+                        <span class="label">Route</span>
+                        <span class="value">{{ booking.source }} ➝ {{ getDestination(booking.tripId) }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Date</span>
+                        <span class="value">{{ booking.startDate | date }}</span>
+                    </div>
+                </div>
+
+                @if (booking.flightDetails) {
+                <div class="flight-section">
+                    <h4>✈️ Flight Details</h4>
+                    <div class="flight-card">
+                        <div class="flight-row">
+                            <span class="airline">{{ booking.flightDetails.airline }}</span>
+                            <span class="flight-number">{{ booking.flightDetails.flightNumber }}</span>
+                        </div>
+                        <div class="flight-time">
+                            {{ booking.flightDetails.departureTime }} - {{ booking.flightDetails.arrivalTime }}
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        }
+    </div>
+</div>

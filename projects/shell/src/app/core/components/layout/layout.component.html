@@ -1,0 +1,37 @@
+@if (authService.isAuthenticated()) {
+<header>
+    <h1>Corporate Platform</h1>
+    <nav>
+        <a routerLink="/travel/list" routerLinkActive="active">Travel</a>
+        <a routerLink="/travel/expenses" routerLinkActive="active">Expenses</a>
+
+        @if (authService.isAdmin()) {
+        <a routerLink="/settings" routerLinkActive="active">Settings</a>
+        }
+    </nav>
+    <div class="user-section">
+        <!-- Bell Icon -->
+        <div class="icon-btn bell" (click)="toggleNotifications()">
+            🔔
+            @if (notificationService.unreadCount() > 0) {
+            <span class="badge">{{ notificationService.unreadCount() }}</span>
+            }
+        </div>
+
+        <!-- User Profile -->
+        <div class="profile-trigger" (click)="toggleProfile()">
+            <div class="avatar-small">{{ authService.currentUser()?.name?.charAt(0) }}</div>
+            <span class="name">{{ authService.currentUser()?.name }}</span>
+        </div>
+
+        <!-- Overlays -->
+        @if (showNotifications()) {
+        <app-notification-list></app-notification-list>
+        }
+        @if (showProfile()) {
+        <app-profile-overlay></app-profile-overlay>
+        }
+    </div>
+</header>
+}
+<router-outlet />

@@ -1,59 +1,147 @@
-# MfeWorkspace
+# Corporate Travel Platform – Angular Frontend Architecture
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+## 1. Overview
+The frontend uses a hybrid micro-frontend architecture:
 
-## Development server
+- **Shell Application**: The host application that manages layout, authentication, and routing.
+- **Travel Micro-Frontend (MFE)**: A remote application handling travel bookings and expenses.
+- **Shared Auth Library**: A shared library for authentication state and guards.
 
-To start a local development server, run:
+Only fast-evolving business domains are implemented as MFEs.
 
-```bash
-ng serve
+---
+
+## 2. Shell Application
+
+### Responsibilities
+- Authentication (Login / Logout)
+- Global layout (Header, Menu)
+- Admin Portal (User Management)
+- Authorization guards (`authGuard`, `roleGuard`)
+- Theme & design system
+- Global user state
+
+### Excludes
+- No travel or expense business logic
+
+---
+
+## 3. Travel Micro-Frontend
+
+### Responsibilities
+- Travel booking
+- Expense management (Create, Edit, Approve)
+- Notifications UI
+
+### Characteristics
+- Independent Angular app
+- Separate CI/CD capabilities
+- Lazy loaded via Module Federation
+- Shares auth context with shell via `auth-lib`
+
+---
+
+## 4. Routing Strategy
+
+Shell routes:
+- `/login`
+- `/settings` (Admin only)
+- `/travel/**` (Loads Travel MFE)
+
+Travel MFE internal routes:
+- `/travel/list`
+- `/travel/create`
+- `/travel/edit/:id`
+- `/travel/book/:id`
+- `/travel/expenses` (Child routes: list, create, edit)
+- `/travel/profile`
+
+---
+
+## 5. Communication & State
+- **REST APIs**: Angular `HttpClient` via proxy to a Mock Node.js server.
+- **Shared State**: `auth-lib` exposes a singleton `AuthService` signal for user state.
+- **Module Federation**: Used to share libraries (`@angular/*`, `rxjs`) and load the remote MFE.
+
+---
+
+## 6. Directory Structure
+
+```
+/
+├── mock-server/        # Node.js Express Mock API
+├── projects/
+│   ├── shell/          # Host Application
+│   ├── travel/         # Remote MFE
+│   └── auth-lib/       # Shared Authentication Library
+├── package.json        # Workspace dependencies and scripts
+└── README.md           # Project Documentation
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 7. Setup & Installation
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1.  **Clone the repository**.
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 8. Development
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### Running the Platform
+To run the entire platform (Shell, Travel MFE, and Mock Server) concurrently:
 
 ```bash
-ng build
+npm run run:all
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+This command starts:
+- **Mock Server** on port `3000`
+- **Shell** on port `4200`
+- **Travel MFE** on port `4201`
 
-## Running unit tests
+### Running Individual Services
+- **Mock Server**: `npm run mock`
+- **Shell**: `npm start` (or `ng serve shell`)
+- **Travel**: `ng serve travel`
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## 9. Deployment
 
-## Running end-to-end tests
+### Build Architecture
+The project uses **Module Federation**. Deployment requires building both the Shell and the Remote (Travel) and serving them so they can communicate over HTTP.
 
-For end-to-end (e2e) testing, run:
+### Build Commands
+1.  **Build Shared Lib**:
+    ```bash
+    ng build auth-lib
+    ```
+2.  **Build Travel MFE**:
+    ```bash
+    ng build travel --configuration production
+    ```
+3.  **Build Shell**:
+    ```bash
+    ng build shell --configuration production
+    ```
 
-```bash
-ng e2e
-```
+### Deployment Steps
+1.  **Host the artifacts**:
+    - Deploy `dist/shell` to your main domain (e.g., `app.corporate.com`).
+    - Deploy `dist/travel` to a separate location (e.g., `travel.corporate.com` or `app.corporate.com/travel-mfe`).
+2.  **Configure Module Federation**:
+    - Update the `remoteEntry` URL in `projects/shell/src/app/app.routes.ts` (or use a dynamic manifest) to point to the deployed Travel MFE location.
+    - Example: `remoteEntry: 'https://travel.corporate.com/remoteEntry.js'`
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 10. Key Technologies
+- **Angular 18+**
+- **Module Federation** (Angular Architects)
+- **RxJS & Signals**
+- **Node.js & Express** (Mock Backend)

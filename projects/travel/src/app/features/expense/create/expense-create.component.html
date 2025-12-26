@@ -1,0 +1,81 @@
+<div class="create-container">
+    <h2>{{ isEditMode ? 'Edit Expense' : 'New Expense Claim' }}</h2>
+
+    <form (submit)="onSubmit($event)">
+        <div class="form-group">
+            <label for="travel">Link to Travel (Optional)</label>
+            <select id="travel" [value]="travelId()" (change)="travelId.set(+$any($event.target).value || null)">
+                <option [value]="null">-- Select Travel --</option>
+                @for (t of travels(); track t.id) {
+                <option [value]="t.id">
+                    {{ t.destination }} ({{ t.startDate | date }})
+                </option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="title">Title / Description</label>
+            <input type="text" id="title" [value]="title()" (input)="onTitleChange($any($event.target).value)"
+                placeholder="e.g. Flight to Berlin" required>
+            <small class="hint">Type keywords like "Flight", "Lunch", "Hotel" to auto-categorize.</small>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="amount">Amount (₹)</label>
+                <input type="number" id="amount" [value]="amount()" (input)="amount.set(+$any($event.target).value)"
+                    min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" [value]="date()" (input)="date.set($any($event.target).value)" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category (Auto-detected)</label>
+            <select id="category" [value]="category()" (change)="category.set($any($event.target).value)">
+                <option value="GENERAL">General</option>
+                <option value="TRAVEL">Travel</option>
+                <option value="FOOD">Food</option>
+                <option value="STAY">Stay</option>
+            </select>
+        </div>
+
+        <div class="form-group receipt-upload">
+            <label>Receipt Upload</label>
+            <div class="upload-area" (click)="fileInput.click()" [class.has-file]="!!receiptUrl()">
+                <input #fileInput type="file" hidden accept="image/*,.pdf" (change)="onFileSelected($event)">
+
+                @if (!receiptUrl()) {
+                <div class="placeholder">
+                    <span>📤 Click to upload receipt image</span>
+                    <small>(Images only for preview)</small>
+                </div>
+                }
+
+                @if (receiptUrl()) {
+                <div class="preview">
+                    <img [src]="receiptUrl()" alt="Receipt Preview">
+                    <button type="button" class="btn-remove"
+                        (click)="$event.stopPropagation(); receiptUrl.set('')">×</button>
+                </div>
+                }
+            </div>
+        </div>
+
+        @if (policyViolation()) {
+        <div class="policy-alert">
+            ⚠️ Policy Violation: {{ policyViolation() }}
+        </div>
+        }
+
+        <div class="actions">
+            <button type="button" class="btn-cancel" routerLink="/travel/expenses">Cancel</button>
+            <button type="submit" class="btn-submit" [disabled]="!!policyViolation()">{{ isEditMode ? 'Save Changes' :
+                'Submit Claim' }}</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,41 @@
+<div class="travel-container">
+    <div class="header">
+        <h2>Book Flight for {{ trip()?.destination }}</h2>
+    </div>
+
+    @if (trip()) {
+    <div class="card trip-summary">
+        <div class="card-content">
+            <h3>Trip Summary</h3>
+            <p><strong>Dates:</strong> {{ trip()?.startDate | date }} - {{ trip()?.endDate | date }}</p>
+            <p><strong>Description:</strong> {{ trip()?.description }}</p>
+        </div>
+    </div>
+
+    <div class="card booking-form-card">
+        <div class="card-content">
+            <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="booking-form">
+                <div class="form-group">
+                    <label>Source City</label>
+                    <input type="text" formControlName="source" placeholder="Ex: New York" />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" formControlName="startDate" />
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" formControlName="endDate" />
+                    </div>
+                </div>
+
+                <button type="submit" [disabled]="bookingForm.invalid" class="btn-confirm">
+                    Confirm Booking
+                </button>
+            </form>
+        </div>
+    </div>
+    }
+</div>

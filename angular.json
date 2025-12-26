@@ -1,10 +1,188 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "cli": {
-    "packageManager": "npm"
-  },
-  "newProjectRoot": "projects",
-  "projects": {
-  }
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"version": 1,
+	"cli": {
+		"packageManager": "npm"
+	},
+	"newProjectRoot": "projects",
+	"projects": {
+		"shell": {
+			"projectType": "application",
+			"schematics": {},
+			"root": "projects/shell",
+			"sourceRoot": "projects/shell/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "ngx-build-plus:browser",
+					"options": {
+						"tsConfig": "projects/shell/tsconfig.app.json",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/shell/public",
+								"output": "."
+							}
+						],
+						"styles": [
+							"projects/shell/src/styles.css"
+						],
+						"main": "projects/shell/src/main.ts",
+						"outputPath": "dist/shell",
+						"index": "projects\\shell\\src\\index.html",
+						"extraWebpackConfig": "projects/shell/webpack.config.js",
+						"commonChunk": false
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "4kB",
+									"maximumError": "8kB"
+								}
+							],
+							"outputHashing": "all",
+							"extraWebpackConfig": "projects/shell/webpack.prod.config.js"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "ngx-build-plus:dev-server",
+					"configurations": {
+						"production": {
+							"buildTarget": "shell:build:production",
+							"extraWebpackConfig": "projects/shell/webpack.prod.config.js"
+						},
+						"development": {
+							"buildTarget": "shell:build:development"
+						}
+					},
+					"defaultConfiguration": "development",
+					"options": {
+						"port": 4200,
+						"proxyConfig": "proxy.conf.json",
+						"publicHost": "http://localhost:4200",
+						"extraWebpackConfig": "projects/shell/webpack.config.js"
+					}
+				},
+				"test": {
+					"builder": "@angular/build:unit-test"
+				}
+			}
+		},
+		"travel": {
+			"projectType": "application",
+			"schematics": {},
+			"root": "projects/travel",
+			"sourceRoot": "projects/travel/src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "ngx-build-plus:browser",
+					"options": {
+						"tsConfig": "projects/travel/tsconfig.app.json",
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "projects/travel/public",
+								"output": "."
+							}
+						],
+						"styles": [
+							"projects/travel/src/styles.css"
+						],
+						"main": "projects/travel/src/main.ts",
+						"outputPath": "dist/travel",
+						"index": "projects\\travel\\src\\index.html",
+						"extraWebpackConfig": "projects/travel/webpack.config.js",
+						"commonChunk": false
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kB",
+									"maximumError": "1MB"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "4kB",
+									"maximumError": "8kB"
+								}
+							],
+							"outputHashing": "all",
+							"extraWebpackConfig": "projects/travel/webpack.prod.config.js"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "ngx-build-plus:dev-server",
+					"configurations": {
+						"production": {
+							"buildTarget": "travel:build:production",
+							"extraWebpackConfig": "projects/travel/webpack.prod.config.js"
+						},
+						"development": {
+							"buildTarget": "travel:build:development"
+						}
+					},
+					"defaultConfiguration": "development",
+					"options": {
+						"port": 4201,
+						"proxyConfig": "proxy.conf.json",
+						"publicHost": "http://localhost:4201",
+						"extraWebpackConfig": "projects/travel/webpack.config.js"
+					}
+				},
+				"test": {
+					"builder": "@angular/build:unit-test"
+				}
+			}
+    },
+    "auth-lib": {
+      "projectType": "library",
+      "root": "projects/auth-lib",
+      "sourceRoot": "projects/auth-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/auth-lib/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/auth-lib/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/auth-lib/tsconfig.spec.json"
+          }
+        }
+      }
+    }
+	}
 }
