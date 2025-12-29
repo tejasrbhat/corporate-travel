@@ -2,6 +2,7 @@ const { shareAll, withModuleFederationPlugin } = require('@angular-architects/mo
 
 module.exports = withModuleFederationPlugin({
 
+
   remotes: {
     "travel": "http://localhost:4201/remoteEntry.js",
   },

@@ -146,6 +146,13 @@ app.get('/corporate/bookings', (req, res) => {
 app.post('/corporate/bookings', (req, res) => {
     const booking = req.body;
     booking.id = bookings.length + 1;
+    // Mock flight details
+    booking.flightDetails = {
+        airline: 'Corporate Air',
+        flightNumber: 'CA-' + Math.floor(Math.random() * 1000),
+        departureTime: '10:00 AM',
+        arrivalTime: '02:00 PM'
+    };
     bookings.push(booking);
     res.status(201).json(booking);
 });
