@@ -4,7 +4,7 @@ import { TravelCreateComponent } from './create/travel-create.component';
 import { TripBookingComponent } from './booking/trip-booking.component';
 import { ItineraryComponent } from './itinerary/itinerary.component';
 import { EXPENSE_ROUTES } from '../expense/expense.routes';
-import { ProfileComponent } from '../profile/profile.component';
+
 
 export const TRAVEL_ROUTES: Routes = [
     { path: '', redirectTo: 'list', pathMatch: 'full' },
@@ -16,9 +16,5 @@ export const TRAVEL_ROUTES: Routes = [
     {
         path: 'expenses',
         children: EXPENSE_ROUTES
-    },
-    {
-        path: 'profile',
-        component: ProfileComponent
     }
 ];
